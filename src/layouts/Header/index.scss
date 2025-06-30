@@ -1,0 +1,163 @@
+.header {
+  height: $header-height;
+  background-color: $white;
+  box-shadow: $shadow-sm;
+  position: sticky;
+  top: 0;
+  z-index: 90;
+  border-bottom: 1px solid $gray-100;
+}
+
+.header-container {
+  height: 100%;
+  padding: 0 $spacing-lg;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+
+  .menu-toggle-btn {
+    width: 40px;
+    height: 40px;
+    border: none;
+    background: transparent;
+    border-radius: $border-radius-md;
+    color: $gray-300;
+    cursor: pointer;
+    transition: all $transition-normal;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &:hover {
+      background-color: $gray-50;
+      color: $primary;
+    }
+
+    i {
+      font-size: 16px;
+    }
+  }
+
+  .header-logo {
+    display: flex;
+    align-items: center;
+    margin-left: $spacing-md;
+
+    i {
+      font-size: 24px;
+      color: $primary;
+      margin-right: $spacing-sm;
+    }
+
+    span {
+      font-size: 20px;
+      font-weight: 600;
+      color: $gray-400;
+    }
+  }
+}
+
+.header-center {
+  flex: 1;
+  max-width: 600px;
+  margin: 0 $spacing-xl;
+
+  .breadcrumb {
+    display: flex;
+    align-items: center;
+
+    .breadcrumb-item {
+      color: $gray-300;
+      font-size: 14px;
+      transition: all $transition-normal;
+      cursor: pointer;
+
+      &:hover:not(.active) {
+        color: $primary;
+      }
+
+      &.active {
+        color: $gray-400;
+        font-weight: 500;
+        cursor: default;
+      }
+    }
+
+    .breadcrumb-separator {
+      margin: 0 $spacing-sm;
+      font-size: 12px;
+      color: $gray-200;
+    }
+  }
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: $spacing-md;
+  flex-shrink: 0;
+
+  .notification-btn {
+    width: 40px;
+    height: 40px;
+    border: none;
+    background: transparent;
+    border-radius: 50%;
+    color: $gray-300;
+    cursor: pointer;
+    transition: all $transition-normal;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+
+    &:hover {
+      background-color: $gray-50;
+      color: $primary;
+    }
+
+    i {
+      font-size: 16px;
+    }
+  }
+
+  .user-info {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+    padding: $spacing-xs $spacing-sm;
+    border-radius: $border-radius-md;
+    cursor: pointer;
+    transition: all $transition-normal;
+
+    &:hover {
+      background-color: $gray-50;
+    }
+
+    .user-avatar {
+      border: 2px solid $primary;
+    }
+
+    .user-name {
+      font-size: 14px;
+      font-weight: 500;
+      color: $gray-400;
+
+      @media (max-width: $breakpoint-md) {
+        display: none;
+      }
+    }
+
+    i {
+      font-size: 12px;
+      color: $gray-300;
+      margin-left: $spacing-xs;
+    }
+  }
+}

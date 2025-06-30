@@ -1,0 +1,289 @@
+.dashboard {
+  .dashboard-header {
+    margin-bottom: $spacing-lg;
+
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: $spacing-md;
+
+      .title-section {
+        h1 {
+          font-size: clamp(1.5rem, 3vw, 2rem);
+          font-weight: 600;
+          color: $gray-400;
+          margin: 0 0 $spacing-xs 0;
+        }
+
+        p {
+          color: $gray-300;
+          margin: 0;
+          font-size: 14px;
+        }
+      }
+
+      .action-buttons {
+        display: flex;
+        gap: $spacing-sm;
+
+        .btn-secondary {
+          background-color: $white;
+          border: 1px solid $gray-100;
+          color: $gray-400;
+
+          &:hover {
+            background-color: $gray-50;
+            border-color: $primary;
+            color: $primary;
+          }
+        }
+      }
+    }
+  }
+
+  .stats-row {
+    margin-bottom: $spacing-xl;
+  }
+
+  .charts-row {
+    margin-bottom: $spacing-xl;
+  }
+}
+
+// 统计卡片样式
+.stat-card {
+  border-radius: $border-radius-lg;
+  border: none;
+  box-shadow: $shadow-sm;
+  transition: all $transition-normal;
+
+  &:hover {
+    box-shadow: $shadow-md;
+    transform: translateY(-2px);
+  }
+
+  .ant-card-body {
+    padding: $spacing-lg;
+  }
+
+  .stat-card-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+
+    .stat-info {
+      flex: 1;
+
+      .stat-title {
+        color: $gray-300;
+        font-size: 14px;
+        margin: 0 0 $spacing-xs 0;
+      }
+
+      .stat-value {
+        font-size: 32px;
+        font-weight: 600;
+        color: $gray-400;
+        margin: 0 0 $spacing-sm 0;
+        line-height: 1.2;
+      }
+
+      .stat-trend {
+        display: flex;
+        align-items: center;
+        gap: $spacing-xs;
+        font-size: 13px;
+
+        &.positive {
+          color: $success;
+        }
+
+        &.negative {
+          color: $danger;
+        }
+
+        .trend-label {
+          color: $gray-300;
+          margin-left: $spacing-xs;
+        }
+      }
+    }
+
+    .stat-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      i {
+        font-size: 20px;
+      }
+
+      &.stat-icon-primary {
+        background-color: rgba($primary, 0.1);
+
+        i {
+          color: $primary;
+        }
+      }
+
+      &.stat-icon-success {
+        background-color: rgba($success, 0.1);
+
+        i {
+          color: $success;
+        }
+      }
+
+      &.stat-icon-warning {
+        background-color: rgba($warning, 0.1);
+
+        i {
+          color: $warning;
+        }
+      }
+
+      &.stat-icon-danger {
+        background-color: rgba($danger, 0.1);
+
+        i {
+          color: $danger;
+        }
+      }
+    }
+  }
+}
+
+// 图表卡片样式
+.chart-card {
+  border-radius: $border-radius-lg;
+  border: none;
+  box-shadow: $shadow-sm;
+
+  .ant-card-head {
+    border-bottom: 1px solid $gray-100;
+
+    .ant-card-head-title {
+      color: $gray-400;
+      font-weight: 600;
+    }
+  }
+
+  .chart-placeholder {
+    height: 280px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: $gray-50;
+    border-radius: $border-radius-md;
+
+    .chart-content {
+      text-align: center;
+      color: $gray-300;
+
+      i {
+        font-size: 48px;
+        margin-bottom: $spacing-md;
+        color: $gray-200;
+      }
+
+      p {
+        margin: $spacing-xs 0;
+        font-size: 14px;
+
+        &:first-of-type {
+          font-weight: 500;
+          color: $gray-400;
+        }
+      }
+    }
+  }
+}
+
+// 快速操作卡片样式
+.quick-actions-card {
+  border-radius: $border-radius-lg;
+  border: none;
+  box-shadow: $shadow-sm;
+
+  .ant-card-head {
+    border-bottom: 1px solid $gray-100;
+
+    .ant-card-head-title {
+      color: $gray-400;
+      font-weight: 600;
+    }
+  }
+
+  .quick-action-btn {
+    height: 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: $spacing-sm;
+    border: 1px solid $gray-100;
+    color: $gray-400;
+    background: $white;
+    transition: all $transition-normal;
+
+    i {
+      font-size: 24px;
+    }
+
+    &:hover {
+      border-color: $primary;
+      color: $primary;
+      background: rgba($primary, 0.05);
+    }
+  }
+}
+
+// 响应式处理
+@media (max-width: $breakpoint-md) {
+  .dashboard {
+    .dashboard-header .header-content {
+      flex-direction: column;
+      align-items: stretch;
+
+      .action-buttons {
+        justify-content: flex-start;
+      }
+    }
+
+    .stat-card .stat-card-content {
+      .stat-info .stat-value {
+        font-size: 24px;
+      }
+
+      .stat-icon {
+        width: 40px;
+        height: 40px;
+
+        i {
+          font-size: 16px;
+        }
+      }
+    }
+
+    .chart-card .chart-placeholder {
+      height: 200px;
+
+      .chart-content i {
+        font-size: 32px;
+      }
+    }
+
+    .quick-action-btn {
+      height: 60px;
+
+      i {
+        font-size: 18px;
+      }
+    }
+  }
+}

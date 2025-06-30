@@ -1,0 +1,151 @@
+.sidebar {
+  width: $sidebar-width;
+  height: 100vh;
+  background-color: $white;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+  transition: width $transition-normal;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+
+  &.sidebar-collapsed {
+    width: $sidebar-collapsed-width;
+
+    .menu-item-text {
+      display: none;
+    }
+
+    .menu-item-icon {
+      margin-right: 0;
+    }
+
+    .logo-text {
+      display: none;
+    }
+
+    .menu-group-title {
+      display: none;
+    }
+  }
+}
+
+// 侧边栏头部
+.sidebar-header {
+  padding: $spacing-lg;
+  border-bottom: 1px solid $gray-100;
+  height: $header-height;
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+
+  .logo-icon {
+    font-size: 24px;
+    color: $primary;
+    transition: all $transition-normal;
+  }
+
+  .logo-text {
+    margin-left: $spacing-sm;
+    font-size: 18px;
+    font-weight: 600;
+    color: $gray-400;
+    transition: all $transition-normal;
+  }
+}
+
+// 侧边栏导航
+.sidebar-nav {
+  flex: 1;
+  padding: $spacing-lg 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+// 菜单分组
+.menu-group {
+  margin-bottom: $spacing-md;
+
+  .menu-group-title {
+    padding: $spacing-sm $spacing-lg;
+    font-size: 12px;
+    color: $gray-200;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: $spacing-lg;
+    transition: all $transition-normal;
+  }
+}
+
+// 菜单项
+.menu-item {
+  display: flex;
+  align-items: center;
+  padding: $spacing-md $spacing-lg;
+  color: $gray-300;
+  text-decoration: none;
+  transition: all $transition-normal;
+  position: relative;
+
+  &:hover {
+    background-color: $gray-50;
+    color: $primary;
+  }
+
+  &.menu-item-active {
+    background-color: rgba($primary, 0.1);
+    color: $primary;
+    font-weight: 500;
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      background-color: $primary;
+    }
+  }
+
+  .menu-item-icon {
+    width: 20px;
+    text-align: center;
+    margin-right: $spacing-md;
+    transition: all $transition-normal;
+  }
+
+  .menu-item-text {
+    transition: all $transition-normal;
+  }
+}
+
+// 响应式处理
+@media (max-width: $breakpoint-lg) {
+  .sidebar {
+    transform: translateX(-100%);
+    z-index: 1000;
+
+    &.sidebar-open {
+      transform: translateX(0);
+    }
+
+    // 移动端时，覆盖展示
+    &:not(.sidebar-collapsed) {
+      width: 280px;
+    }
+  }
+}
+
+@media (max-width: $breakpoint-md) {
+  .sidebar {
+    width: 280px;
+  }
+}

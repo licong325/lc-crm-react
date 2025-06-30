@@ -1,0 +1,55 @@
+.main-layout {
+  display: flex;
+  min-height: 100vh;
+  background-color: $gray-50;
+  overflow: hidden;
+}
+
+.main-content {
+  flex: 1;
+  margin-left: $sidebar-width;
+  transition: margin-left $transition-normal;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  width: calc(100vw - #{$sidebar-width});
+
+  &.main-content-expanded {
+    margin-left: $sidebar-collapsed-width;
+    width: calc(100vw - #{$sidebar-collapsed-width});
+  }
+}
+
+.page-content {
+  flex: 1;
+  background-color: $gray-50;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.page-container {
+  padding: $spacing-lg;
+  max-width: 100%;
+  margin: 0 auto;
+
+  @media (max-width: $breakpoint-xl) {
+    padding: $spacing-md;
+  }
+
+  @media (max-width: $breakpoint-md) {
+    padding: $spacing-sm;
+  }
+}
+
+// 响应式处理
+@media (max-width: $breakpoint-lg) {
+  .main-content {
+    margin-left: 0;
+    width: 100vw;
+
+    &.main-content-expanded {
+      margin-left: 0;
+      width: 100vw;
+    }
+  }
+}

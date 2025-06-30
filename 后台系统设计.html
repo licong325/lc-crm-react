@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>企业级后台管理系统</title>
+  <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style type="text/tailwindcss">
+    @theme {
+      --color-primary: #165DFF;
+      --color-primary-light: #409EFF;
+      --color-success: #67C23A;
+      --color-warning: #E6A23C;
+      --color-danger: #F56C6C;
+      --color-gray-50: #F5F7FA;
+      --color-gray-100: #E5E9F2;
+      --color-gray-200: #C0C6CF;
+      --color-gray-300: #86909C;
+      --color-gray-400: #4E5969;
+      --font-inter: 'Inter', sans-serif;
+    }
+    
+    @utility smooth-transition {
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    @utility sidebar-shadow {
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+    }
+    
+    @utility card-shadow {
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+    
+    body {
+      font-family: var(--font-inter);
+    }
+    
+    .sidebar-collapsed {
+      width: 64px !important;
+    }
+    
+    .sidebar-collapsed .sidebar-item-text {
+      display: none !important;
+    }
+    
+    .sidebar-collapsed .sidebar-item-icon {
+      margin-right: 0 !important;
+    }
+    
+    .chart-container {
+      position: relative;
+      height: 280px;
+    }
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-400 min-h-screen flex flex-col">
+  <!-- 顶部导航栏 -->
+  <header class="bg-white shadow-sm sticky top-0 z-50">
+    <div class="container mx-auto px-4">
+      <div class="flex items-center justify-between h-16">
+        <!-- 左侧菜单按钮和logo -->
+        <div class="flex items-center">
+          <button id="menu-toggle" class="p-2 rounded-md text-gray-300 hover:bg-gray-100 focus:outline-none">
+            <i class="fas fa-bars text-lg"></i>
+          </button>
+          <div class="ml-4 flex items-center">
+            <i class="fas fa-cube text-primary text-2xl mr-2"></i>
+            <span class="text-xl font-semibold text-gray-400">AdminSystem</span>
+          </div>
+        </div>
+        
+        <!-- 中间面包屑导航 -->
+        <div class="hidden md:flex items-center flex-1 max-w-xl mx-8">
+          <nav aria-label="breadcrumb">
+            <ol class="flex items-center text-sm">
+              <li class="text-gray-300"><a href="#" class="hover:text-primary smooth-transition">首页</a></li>
+              <li class="mx-2"><i class="fas fa-chevron-right text-xs"></i></li>
+              <li class="text-gray-300"><a href="#" class="hover:text-primary smooth-transition">数据管理</a></li>
+              <li class="mx-2"><i class="fas fa-chevron-right text-xs"></i></li>
+              <li class="text-gray-400 font-medium">用户分析</li>
+            </ol>
+          </nav>
+        </div>
+        
+        <!-- 右侧功能区 -->
+        <div class="flex items-center">
+          <button class="p-2 rounded-full text-gray-300 hover:bg-gray-100 focus:outline-none relative">
+            <i class="fas fa-bell text-lg"></i>
+            <span class="absolute top-1 right-1 w-2 h-2 bg-danger rounded-full"></span>
+          </button>
+          <div class="ml-4 relative">
+            <button id="user-menu-button" class="flex items-center focus:outline-none">
+              <img src="https://picsum.photos/200/200?random=1" alt="用户头像" class="w-8 h-8 rounded-full object-cover border-2 border-primary">
+              <span class="ml-2 hidden md:inline text-sm font-medium text-gray-400">管理员</span>
+              <i class="fas fa-chevron-down ml-1 text-xs text-gray-300"></i>
+            </button>
+            <div id="user-menu" class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 hidden z-10">
+              <a href="#" class="block px-4 py-2 text-sm text-gray-400 hover:bg-gray-50 smooth-transition">
+                <i class="fas fa-user mr-2"></i>个人资料
+              </a>
+              <a href="#" class="block px-4 py-2 text-sm text-gray-400 hover:bg-gray-50 smooth-transition">
+                <i class="fas fa-cog mr-2"></i>设置
+              </a>
+              <div class="border-t border-gray-100 my-1"></div>
+              <a href="#" class="block px-4 py-2 text-sm text-danger hover:bg-gray-50 smooth-transition">
+                <i class="fas fa-sign-out-alt mr-2"></i>退出登录
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="flex flex-1 overflow-hidden">
+    <!-- 侧边导航栏 -->
+    <aside id="sidebar" class="bg-white sidebar-shadow w-64 smooth-transition">
+      <div class="p-4 border-b border-gray-100">
+        <div class="flex items-center">
+          <i class="fas fa-cube text-primary text-2xl"></i>
+          <span class="ml-2 text-lg font-semibold text-gray-400 sidebar-item-text">AdminSystem</span>
+        </div>
+      </div>
+      
+      <nav class="py-4">
+        <a href="#" class="flex items-center px-4 py-3 text-primary bg-primary-light/10 sidebar-item smooth-transition">
+          <i class="fas fa-tachometer-alt sidebar-item-icon w-5 text-center mr-3"></i>
+          <span class="sidebar-item-text">仪表盘</span>
+        </a>
+        
+        <a href="#" class="flex items-center px-4 py-3 text-gray-300 hover:bg-gray-50 sidebar-item smooth-transition">
+          <i class="fas fa-users sidebar-item-icon w-5 text-center mr-3"></i>
+          <span class="sidebar-item-text">用户管理</span>
+        </a>
+        
+        <a href="#" class="flex items-center px-4 py-3 text-gray-300 hover:bg-gray-50 sidebar-item smooth-transition">
+          <i class="fas fa-shopping-cart sidebar-item-icon w-5 text-center mr-3"></i>
+          <span class="sidebar-item-text">订单管理</span>
+        </a>
+        
+        <a href="#" class="flex items-center px-4 py-3 text-gray-300 hover:bg-gray-50 sidebar-item smooth-transition">
+          <i class="fas fa-cog sidebar-item-icon w-5 text-center mr-3"></i>
+          <span class="sidebar-item-text">系统设置</span>
+        </a>
+        
+        <div class="px-4 py-2 text-xs text-gray-200 mt-6">权限管理</div>
+        <a href="#" class="flex items-center px-4 py-3 text-gray-300 hover:bg-gray-50 sidebar-item smooth-transition">
+          <i class="fas fa-key sidebar-item-icon w-5 text-center mr-3"></i>
+          <span class="sidebar-item-text">角色管理</span>
+        </a>
+        <a href="#" class="flex items-center px-4 py-3 text-gray-300 hover:bg-gray-50 sidebar-item smooth-transition">
+          <i class="fas fa-shield-alt sidebar-item-icon w-5 text-center mr-3"></i>
+          <span class="sidebar-item-text">权限配置</span>
+        </a>
+      </nav>
+    </aside>
+
+    <!-- 主内容区 -->
+    <main class="flex-1 overflow-y-auto p-4 bg-gray-50">
+      <div class="container mx-auto">
+        <!-- 页面标题和操作按钮 -->
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
+          <div>
+            <h1 class="text-[clamp(1.5rem,3vw,2rem)] font-semibold text-gray-400">数据仪表盘</h1>
+            <p class="text-gray-300 mt-1">查看系统关键指标和用户行为数据</p>
+          </div>
+          <div class="mt-4 md:mt-0 flex space-x-2">
+            <button class="px-4 py-2 bg-white border border-gray-100 rounded-md text-gray-400 hover:bg-gray-50 smooth-transition">
+              <i class="fas fa-download mr-2"></i>导出数据
+            </button>
+            <button class="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary-light smooth-transition">
+              <i class="fas fa-refresh mr-2"></i>刷新数据
+            </button>
+          </div>
+        </div>
+        
+        <!-- 数据概览卡片 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+          <!-- 卡片1：总用户数 -->
+          <div class="bg-white rounded-lg p-6 card-shadow hover:shadow-md smooth-transition">
+            <div class="flex items-start justify-between">
+              <div>
+                <p class="text-gray-300 text-sm">总用户数</p>
+                <h3 class="text-3xl font-semibold text-gray-400 mt-1">12,845</h3>
+                <p class="text-success text-sm mt-2 flex items-center">
+                  <i class="fas fa-arrow-up mr-1"></i> 12.5% <span class="text-gray-300 ml-1">较上月</span>
+                </p>
+              </div>
+              <div class="p-3 bg-primary/10 rounded-full">
+                <i class="fas fa-user text-primary text-xl"></i>
+              </div>
+            </div>
+          </div>
+          
+          <!-- 卡片2：今日订单 -->
+          <div class="bg-white rounded-lg p-6 card-shadow hover:shadow-md smooth-transition">
+            <div class="flex items-start justify-between">
+              <div>
+                <p class="text-gray-300 text-sm">今日订单</p>
+                <h3 class="text-3xl font-semibold text-gray-400 mt-1">328</h3>
+                <p class="text-success text-sm mt-2 flex items-center">
+                  <i class="fas fa-arrow-up mr-1"></i> 8.2% <span class="text-gray-300 ml-1">较昨日</span>
+                </p>
+              </div>
+              <div class="p-3 bg-success/10 rounded-full">
+                <i class="fas fa-shopping-cart text-success text-xl"></i>
+              </div>
+            </div>
+          </div>
+          
+          <!-- 卡片3：转化率 -->
+          <div class="bg-white rounded-lg p-6 card-shadow hover:shadow-md smooth-transition">
+            <div class="flex items-start justify-between">
+              <div>
+                <p class="text-gray-300 text-sm">转化率</p>
+                <h3 class="text-3xl font-semibold text-gray-400 mt-1">24.7%</h3>
+                <p class="text-danger text-sm mt-2 flex items-center">
+                  <i class="fas fa-arrow-down mr-1"></i> 1.3% <span class="text-gray-300 ml-1">较上周</span>
+                </p>
+              </div>
+              <div class="p-3 bg-warning/10 rounded-full">
+                <i class="fas fa-percentage text-warning text-xl"></i>
+              </div>
+            </div>
+          </div>
+          
+          <!-- 卡片4：收入 -->
+          <div class="bg-white rounded-lg p-6 card-shadow hover:shadow-md smooth-transition">
+            <div class="flex items-start justify-between">
+              <div>
+                <p class="text-gray-300 text-sm">本月收入</p>
+                <h3 class="text-3xl font-semibold text-gray-400 mt-1">¥128,450</h3>
+                <p class="text-success text-sm mt-2 flex items-center">
+                  <i class="fas fa-arrow-up mr-1"></i> 15.6% <span class="text-gray-300 ml-1">较上月</span>
+                </p>
+              </div>
+              <div class="p-3 bg-primary/10 rounded-full">
+                <i class="fas fa-money-bill-wave text-primary text-xl"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 图表区域 -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+          <!-- 主图表 -->
+          <div class="lg:col-span-2 bg-white rounded-lg p-6 card-shadow">
+            <div class="flex items-center justify-between mb-6">
+              <h3 class="font-semibold text-gray-400">用户增长趋势</h3>
+              <div class="flex space-x-2">
+                <button class="px-3 py-1 text-xs bg-primary text-white rounded-md">7天</button>
+                <button class="px-3 py-1 text-xs bg-gray-50 text-gray-300 rounded-md hover:bg-gray-100 smooth-transition">30天</button>
+                <button class="px-3 py-1 text-xs bg-gray-50 text-gray-300 rounded-md hover:bg-gray-100 smooth-transition">90天</button>
+              </div>
+            </div>
+            <div class="chart-container">
+              <canvas id="userGrowthChart"></canvas>
+            </div>
+          </div>
+          
+          <!-- 右侧图表 -->
+          <div class="bg-white rounded-lg p-6 card-shadow">
+            <h3 class="font-semibold text-gray-400 mb-6">用户来源分布</h3>
+            <div class="chart-container">
+              <canvas id="userSourceChart"></canvas>
+            </div>
+            <div class="mt-6 space-y-3">
+              <div class="flex items-center">
+                <span class="w-3 h-3 rounded-full bg-primary mr-2"></span>
+                <span class="text-sm text-gray-400">搜索引擎</span>
+                <span class="ml-auto font-medium text-gray-400">38%</span>
+              </div>
+              <div class="flex items-center">
+                <span class="w-3 h-3 rounded-full bg-success mr-2"></span>
+                <span class="text-sm text-gray-400">社交媒体</span>
+                <span class="ml-auto font-medium text-gray-400">27%</span>
+              </div>
+              <div class="flex items-center">
+                <span class="w-3 h-3 rounded-full bg-warning mr-2"></span>
+                <span class="text-sm text-gray-400">直接访问</span>
+                <span class="ml-auto font-medium text-gray-400">22%</span>
+              </div>
+              <div class="flex items-center">
+                <span class="w-3 h-3 rounded-full bg-gray-200 mr-2"></span>
+                <span class="text-sm text-gray-400">其他来源</span>
+                <span class="ml-auto font-medium text-gray-400">13%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 用户列表 -->
+        <div class="bg-white rounded-lg card-shadow mb-6">
+          <div class="p-6 border-b border-gray-100">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+              <h3 class="font-semibold text-gray-400">最近活跃用户</h3>
+              <div class="mt-4 md:mt-0 flex items-center space-x-4">
+                <div class="relative">
+                  <input type="text" placeholder="搜索用户" class="pl-10 pr-4 py-2 border border-gray-100 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-primary/50">
+                  <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-200"></i>
+                </div>
+                <select class="px-4 py-2 border border-gray-100 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-primary/50">
+                  <option>全部状态</option>
+                  <option>活跃</option>
+                  <option>非活跃</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          
+          <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-100">
+              <thead class="bg-gray-50">
+                <tr>
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                    <div class="flex items-center">
+                      <input type="checkbox" class="h-4 w-4 text-primary focus:ring-primary">
+                      <span class="ml-2">用户信息</span>
+                    </div>
+                  </th>
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider cursor-pointer hover:text-primary smooth-transition" onclick="sortTable(1)">
+                    用户名 <i class="fas fa-sort ml-1 text-gray-200"></i>
+                  </th>
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider cursor-pointer hover:text-primary smooth-transition" onclick="sortTable(2)">
+                    邮箱 <i class="fas fa-sort ml-1 text-gray-200"></i>
+                  </th>
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider cursor-pointer hover:text-primary smooth-transition" onclick="sortTable(3)">
+                    注册时间 <i class="fas fa-sort ml-1 text-gray-200"></i>
+                  </th>
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                    状态
+                  </th>
+                  <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-300 uppercase tracking-wider">
+                    操作
+                  </th>
+                </tr>
+              </thead>
+              <tbody class="bg-white divide-y divide-gray-100">
+                <tr class="hover:bg-gray-50 smooth-transition">
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="flex items-center">
+                      <input type="checkbox" class="h-4 w-4 text-primary focus:ring-primary">
+                      <div class="ml-3">
+                        <div class="flex items-center">
+                          <img class="h-8 w-8 rounded-full" src="https://picsum.photos/200/200?random=10" alt="">
+                          <div class="ml-4">
+                            <div class="text-sm font-medium text-gray-400">张三</div>
+                            <div class="text-xs text-gray-300">ID: U-20230512</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-400">zhangsan</td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">zhangsan@example.com</td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">2023-05-12</td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-success/10 text-success">
+                      活跃
+                    </span>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                    <div class="flex justify-end space-x-2">
+                      <button class="text-primary hover:text-primary-light smooth-transition" title="查看">
+                        <i class="fas fa-eye"></i>
+                      </button>
+                      <button class="text-warning hover:text-warning-light smooth-transition" title="编辑">
+                        <i class="fas fa-edit"></i>
+                      </button>
+                      <button class="text-danger hover:text-danger-light smooth-transition" title="删除">
+                        <i class="fas fa-trash-alt"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr class="hover:bg-gray-50 smooth-transition">
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="flex items-center">
+                      <input type="checkbox" class="h-4 w-4 text-primary focus:ring-primary">
+                      <div class="ml-3">
+                        <div class="flex items-center">
+                          <img class="h-8 w-8 rounded-full" src="https://picsum.photos/200/200?random=11" alt="">
+                          <div class="ml-4">
+                            <div class="text-sm font-medium text-gray-400">李四</div>
+                            <div class="text-xs text-gray-300">ID: U-20230608</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-400">lisi</td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">lisi@example.com</td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">2023-06-08</td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-success/10 text-success">
+                      活跃
+                    </span>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                    <div class="flex justify-end space-x-2">
+                      <button class="text-primary hover:text-primary-light smooth-transition" title="查看">
+                        <i class="fas fa-eye"></i>
+                      </button>
+                      <button class="text-warning hover:text-warning-light smooth-transition" title="编辑">
+                        <i class="fas fa-edit"></i>
+                      </button>
+                      <button class="text-danger hover:text-danger-light smooth-transition" title="删除">
+                        <i class="fas fa-trash-alt"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr class="hover:bg-gray-50 smooth-transition">
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="flex items-center">
+                      <input type="checkbox" class="h-4 w-4 text-primary focus:ring-primary">
+                      <div class="ml-3">
+                        <div class="flex items-center">
+                          <img class="h-8 w-8 rounded-full" src="https://picsum.photos/200/200?random=12" alt="">
+                          <div class="ml-4">
+                            <div class="text-sm font-medium text-gray-400">王五</div>
+                            <div class="text-xs text-gray-300">ID: U-20230715</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-400">wangwu</td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">wangwu@example.com</td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">2023-07-15</td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-300">
+                      非活跃
+                    </span>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                    <div class="flex justify-end space-x-2">
+                      <button class="text-primary hover:text-primary-light smooth-transition" title="查看">
+                        <i class="fas fa-eye"></i>
+                      </button>
+                      <button class="text-warning hover:text-warning-light smooth-transition" title="编辑">
+                        <i class="fas fa-edit"></i>
+                      </button>
+                      <button class="text-danger hover:text-danger-light smooth-transition" title="删除">
+                        <i class="fas fa-trash-alt"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr class="hover:bg-gray-50 smooth-transition">
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="flex items-center">
+                      <input type="checkbox" class="h-4 w-4 text-primary focus:ring-primary">
+                      <div class="ml-3">
+                        <div class="flex items-center">
+                          <img class="h-8 w-8 rounded-full" src="https://picsum.photos/200/200?random=13" alt="">
+                          <div class="ml-4">
+                            <div class="text-sm font-medium text-gray-400">赵六</div>
+                            <div class="text-xs text-gray-300">ID: U-20230822</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-400">zhaoliu</td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">zhaoliu@example.com</td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">2023-08-22</td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-success/10 text-success">
+                      活跃
+                    </span>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                    <div class="flex justify-end space-x-2">
+                      <button class="text-primary hover:text-primary-light smooth-transition" title="查看">
+                        <i class="fas fa-eye"></i>
+                      </button>
+                      <button class="text-warning hover:text-warning-light smooth-transition" title="编辑">
+                        <i class="fas fa-edit"></i>
+                      </button>
+                      <button class="text-danger hover:text-danger-light smooth-transition" title="删除">
+                        <i class="fas fa-trash-alt"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          
+          <div class="px-6 py-4 border-t border-gray-100 flex items-center justify-between">
+            <div class="text-sm text-gray-300">
+              显示 <span class="font-medium">1</span> 到 <span class="font-medium">4</span> 条，共 <span class="font-medium">24</span> 条
+            </div>
+            <div class="flex space-x-2">
+              <button class="px-3 py-1 border border-gray-100 rounded-md text-sm text-gray-300 hover:bg-gray-50 smooth-transition" disabled>
+                <i class="fas fa-chevron-left"></i>
+              </button>
+              <button class="px-3 py-1 bg-primary text-white rounded-md text-sm smooth-transition">1</button>
+              <button class="px-3 py-1 border border-gray-100 rounded-md text-sm text-gray-400 hover:bg-gray-50 smooth-transition">2</button>
+              <button class="px-3 py-1 border border-gray-100 rounded-md text-sm text-gray-400 hover:bg-gray-50 smooth-transition">3</button>
+              <button class="px-3 py-1 border border-gray-100 rounded-md text-sm text-gray-400 hover:bg-gray-50 smooth-transition">
+                <i class="fas fa-chevron-right"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    // 侧边栏折叠/展开
+    document.getElementById('menu-toggle').addEventListener('click', function() {
+      const sidebar = document.getElementById('sidebar');
+      sidebar.classList.toggle('sidebar-collapsed');
+    });
+    
+    // 用户菜单显示/隐藏
+    document.getElementById('user-menu-button').addEventListener('click', function() {
+      const menu = document.getElementById('user-menu');
+      menu.classList.toggle('hidden');
+    });
+    
+    // 点击其他区域关闭用户菜单
+    document.addEventListener('click', function(event) {
+      const userMenuButton = document.getElementById('user-menu-button');
+      const userMenu = document.getElementById('user-menu');
+      
+      if (!userMenuButton.contains(event.target) && !userMenu.contains(event.target)) {
+        userMenu.classList.add('hidden');
+      }
+    });
+    
+    // 初始化用户增长趋势图表
+    const userGrowthCtx = document.getElementById('userGrowthChart').getContext('2d');
+    const userGrowthChart = new Chart(userGrowthCtx, {
+      type: 'line',
+      data: {
+        labels: ['1月', '2月', '3月', '4月', '5月', '6月', '7月'],
+        datasets: [{
+          label: '新用户',
+          data: [1200, 1900, 1700, 2500, 2200, 3000, 3200],
+          borderColor: '#165DFF',
+          backgroundColor: 'rgba(22, 93, 255, 0.1)',
+          tension: 0.3,
+          fill: true
+        }, {
+          label: '活跃用户',
+          data: [800, 1200, 1500, 1800, 2000, 2400, 2700],
+          borderColor: '#67C23A',
+          backgroundColor: 'rgba(103, 194, 58, 0.1)',
+          tension: 0.3,
+          fill: true
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            position: 'top',
+          },
+          tooltip: {
+            mode: 'index',
+            intersect: false,
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            grid: {
+              drawBorder: false
+            }
+          },
+          x: {
+            grid: {
+              display: false
+            }
+          }
+        }
+      }
+    });
+    
+    // 初始化用户来源图表
+    const userSourceCtx = document.getElementById('userSourceChart').getContext('2d');
+    const userSourceChart = new Chart(userSourceCtx, {
+      type: 'doughnut',
+      data: {
+        labels: ['搜索引擎', '社交媒体', '直接访问', '其他来源'],
+        datasets: [{
+          data: [38, 27, 22, 13],
+          backgroundColor: [
+            '#165DFF',
+            '#67C23A',
+            '#E6A23C',
+            '#C0C6CF'
+          ],
+          borderWidth: 0
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            display: false
+          }
+        },
+        cutout: '70%'
+      }
+    });
+    
+    // 表格排序功能
+    let sortColumn = 0;
+    let sortDirection = 1; // 1: 升序, -1: 降序
+    
+    function sortTable(column) {
+      sortDirection = sortColumn === column ? -sortDirection : 1;
+      sortColumn = column;
+      
+      // 这里可以添加实际的排序逻辑
+      console.log(`按列 ${column} ${sortDirection === 1 ? '升序' : '降序'} 排序`);
+      
+      // 更新排序图标
+      const headers = document.querySelectorAll('th[onclick^="sortTable"] i');
+      headers.forEach((header, index) => {
+        if (index + 1 === column) {
+          header.className = `fas fa-sort-${sortDirection === 1 ? 'asc' : 'desc'} ml-1 text-gray-200`;
+        } else {
+          header.className = `fas fa-sort ml-1 text-gray-200`;
+        }
+      });
+    }
+    
+    // 模拟数据更新
+    setInterval(() => {
+      const random = Math.floor(Math.random() * 100);
+      userGrowthChart.data.datasets[0].data[6] = 3200 + random;
+      userGrowthChart.update();
+    }, 5000);
+  </script>
+</body>
+</html>
