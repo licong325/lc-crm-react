@@ -1,0 +1,103 @@
+// 角色管理页面样式
+.role-management {
+  .page-header {
+    margin-bottom: $spacing-lg;
+
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: $spacing-md;
+
+      .title-section {
+        h1 {
+          font-size: clamp(1.5rem, 3vw, 2rem);
+          font-weight: 600;
+          color: $gray-400;
+          margin: 0 0 $spacing-xs 0;
+        }
+
+        p {
+          color: $gray-300;
+          margin: 0;
+          font-size: 14px;
+        }
+      }
+
+      .action-buttons {
+        display: flex;
+        gap: $spacing-sm;
+      }
+    }
+  }
+
+  .role-list-card {
+    border-radius: $border-radius-lg;
+    border: none;
+    box-shadow: $shadow-sm;
+
+    .ant-table-thead > tr > th {
+      background-color: $gray-50;
+      color: $gray-400;
+      font-weight: 600;
+      border-bottom: 1px solid $gray-100;
+    }
+
+    .ant-table-tbody > tr:hover > td {
+      background-color: rgba($primary, 0.02);
+    }
+  }
+
+  // 角色表单弹窗样式
+  .role-form {
+    .permission-tree-container {
+      max-height: 300px;
+      overflow-y: auto;
+      border: 1px solid $gray-100;
+      border-radius: $border-radius-md;
+      padding: $spacing-md;
+
+      .permission-tree {
+        .ant-tree-treenode {
+          padding: $spacing-xs 0;
+
+          .ant-tree-node-content-wrapper {
+            border-radius: $border-radius-sm;
+            transition: all $transition-normal;
+
+            &:hover {
+              background-color: rgba($primary, 0.05);
+            }
+          }
+
+          .ant-tree-checkbox {
+            margin-right: $spacing-sm;
+          }
+        }
+
+        .ant-tree-treenode-selected {
+          .ant-tree-node-content-wrapper {
+            background-color: rgba($primary, 0.1);
+          }
+        }
+      }
+    }
+  }
+
+  // 响应式处理
+  @media (max-width: $breakpoint-md) {
+    .page-header .header-content {
+      flex-direction: column;
+      align-items: stretch;
+
+      .action-buttons {
+        justify-content: flex-start;
+      }
+    }
+
+    .role-form .permission-tree-container {
+      max-height: 200px;
+    }
+  }
+}

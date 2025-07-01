@@ -1,0 +1,110 @@
+// 系统设置页面样式
+.system-settings {
+  .page-header {
+    margin-bottom: $spacing-lg;
+
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: $spacing-md;
+
+      .title-section {
+        h1 {
+          font-size: clamp(1.5rem, 3vw, 2rem);
+          font-weight: 600;
+          color: $gray-400;
+          margin: 0 0 $spacing-xs 0;
+        }
+
+        p {
+          color: $gray-300;
+          margin: 0;
+          font-size: 14px;
+        }
+      }
+
+      .action-buttons {
+        display: flex;
+        gap: $spacing-sm;
+      }
+    }
+  }
+
+  .settings-card {
+    border-radius: $border-radius-lg;
+    border: none;
+    box-shadow: $shadow-sm;
+
+    .settings-tabs {
+      .ant-tabs-tab {
+        padding: $spacing-md $spacing-lg;
+        border-radius: $border-radius-md 0 0 $border-radius-md;
+
+        &.ant-tabs-tab-active {
+          background-color: rgba($primary, 0.05);
+
+          .ant-tabs-tab-btn {
+            color: $primary;
+          }
+        }
+      }
+
+      .ant-tabs-content {
+        padding: $spacing-xl;
+      }
+
+      .ant-tabs-tabpane {
+        .ant-form-item {
+          margin-bottom: $spacing-lg;
+        }
+
+        .ant-divider {
+          margin: $spacing-xl 0;
+        }
+      }
+    }
+
+    .backup-actions {
+      display: flex;
+      gap: $spacing-md;
+      margin-top: $spacing-lg;
+      padding-top: $spacing-lg;
+      border-top: 1px solid $gray-100;
+    }
+  }
+
+  // 响应式处理
+  @media (max-width: $breakpoint-md) {
+    .page-header .header-content {
+      flex-direction: column;
+      align-items: stretch;
+
+      .action-buttons {
+        justify-content: flex-start;
+      }
+    }
+
+    .settings-tabs {
+      .ant-tabs {
+        .ant-tabs-tab-list {
+          width: 100%;
+        }
+      }
+    }
+  }
+
+  // 左侧选项卡在小屏幕上改为顶部
+  @media (max-width: $breakpoint-lg) {
+    .settings-card .settings-tabs {
+      .ant-tabs-left {
+        .ant-tabs-nav {
+          .ant-tabs-tab {
+            border-radius: $border-radius-md $border-radius-md 0 0;
+          }
+        }
+      }
+    }
+  }
+}

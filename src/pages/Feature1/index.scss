@@ -1,0 +1,191 @@
+// 功能1页面样式
+.feature1 {
+  .page-header {
+    margin-bottom: $spacing-lg;
+
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: $spacing-md;
+
+      .title-section {
+        h1 {
+          font-size: clamp(1.5rem, 3vw, 2rem);
+          font-weight: 600;
+          color: $gray-400;
+          margin: 0 0 $spacing-xs 0;
+        }
+
+        p {
+          color: $gray-300;
+          margin: 0;
+          font-size: 14px;
+        }
+      }
+
+      .action-buttons {
+        display: flex;
+        gap: $spacing-sm;
+      }
+    }
+  }
+
+  .stats-row {
+    margin-bottom: $spacing-xl;
+
+    .stat-card {
+      border-radius: $border-radius-lg;
+      border: none;
+      box-shadow: $shadow-sm;
+      transition: all $transition-normal;
+
+      &:hover {
+        box-shadow: $shadow-md;
+        transform: translateY(-2px);
+      }
+
+      .ant-card-body {
+        padding: $spacing-lg;
+      }
+
+      .ant-statistic {
+        .ant-statistic-title {
+          color: $gray-300;
+          font-size: 14px;
+          margin-bottom: $spacing-xs;
+        }
+
+        .ant-statistic-content {
+          .ant-statistic-content-value {
+            font-weight: 600;
+            font-size: 24px;
+          }
+
+          .ant-statistic-content-prefix {
+            margin-right: $spacing-xs;
+          }
+        }
+      }
+    }
+  }
+
+  .content-card {
+    border-radius: $border-radius-lg;
+    border: none;
+    box-shadow: $shadow-sm;
+    height: 100%;
+
+    .ant-card-head {
+      border-bottom: 1px solid $gray-100;
+
+      .ant-card-head-title {
+        color: $gray-400;
+        font-weight: 600;
+      }
+    }
+
+    .ant-list-item {
+      padding: $spacing-md 0;
+      border-bottom: 1px solid $gray-100;
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      .ant-list-item-meta {
+        .ant-list-item-meta-title {
+          color: $gray-400;
+          font-weight: 500;
+        }
+
+        .ant-list-item-meta-description {
+          color: $gray-300;
+        }
+      }
+    }
+
+    .progress-section {
+      .progress-item {
+        margin-bottom: $spacing-lg;
+
+        &:last-child {
+          margin-bottom: 0;
+        }
+
+        .progress-label {
+          display: block;
+          color: $gray-400;
+          margin-bottom: $spacing-xs;
+          font-weight: 500;
+        }
+
+        .ant-progress {
+          .ant-progress-text {
+            color: $gray-400;
+          }
+        }
+      }
+    }
+  }
+
+  .action-card {
+    margin-top: $spacing-xl;
+    border-radius: $border-radius-lg;
+    border: none;
+    box-shadow: $shadow-sm;
+
+    .ant-card-head {
+      border-bottom: 1px solid $gray-100;
+
+      .ant-card-head-title {
+        color: $gray-400;
+        font-weight: 600;
+      }
+    }
+
+    .ant-btn {
+      height: 60px;
+      border-radius: $border-radius-md;
+      font-weight: 500;
+      transition: all $transition-normal;
+
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: $shadow-md;
+      }
+
+      .anticon {
+        font-size: 20px;
+        margin-right: $spacing-xs;
+      }
+    }
+  }
+
+  // 响应式处理
+  @media (max-width: $breakpoint-md) {
+    .page-header .header-content {
+      flex-direction: column;
+      align-items: stretch;
+
+      .action-buttons {
+        justify-content: flex-start;
+      }
+    }
+
+    .stats-row {
+      .stat-card .ant-statistic .ant-statistic-content .ant-statistic-content-value {
+        font-size: 20px;
+      }
+    }
+
+    .action-card .ant-btn {
+      height: 50px;
+
+      .anticon {
+        font-size: 16px;
+      }
+    }
+  }
+}

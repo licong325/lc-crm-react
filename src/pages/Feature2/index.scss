@@ -1,0 +1,279 @@
+// 功能2页面样式
+.feature2 {
+  .page-header {
+    margin-bottom: $spacing-lg;
+
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: $spacing-md;
+
+      .title-section {
+        h1 {
+          font-size: clamp(1.5rem, 3vw, 2rem);
+          font-weight: 600;
+          color: $gray-400;
+          margin: 0 0 $spacing-xs 0;
+        }
+
+        p {
+          color: $gray-300;
+          margin: 0;
+          font-size: 14px;
+        }
+      }
+
+      .action-buttons {
+        display: flex;
+        gap: $spacing-sm;
+      }
+    }
+  }
+
+  .steps-card {
+    margin-bottom: $spacing-xl;
+    border-radius: $border-radius-lg;
+    border: none;
+    box-shadow: $shadow-sm;
+
+    .ant-card-head {
+      border-bottom: 1px solid $gray-100;
+
+      .ant-card-head-title {
+        color: $gray-400;
+        font-weight: 600;
+      }
+    }
+
+    .custom-steps {
+      margin-bottom: $spacing-xl;
+
+      .ant-steps-item {
+        .ant-steps-item-title {
+          color: $gray-400;
+          font-weight: 500;
+        }
+
+        .ant-steps-item-description {
+          color: $gray-300;
+        }
+
+        &.ant-steps-item-active {
+          .ant-steps-item-title {
+            color: $primary;
+          }
+        }
+
+        &.ant-steps-item-finish {
+          .ant-steps-item-title {
+            color: $success;
+          }
+
+          .ant-steps-item-icon {
+            background-color: $success;
+            border-color: $success;
+          }
+        }
+      }
+    }
+
+    .steps-action {
+      display: flex;
+      gap: $spacing-md;
+      justify-content: center;
+      padding-top: $spacing-lg;
+      border-top: 1px solid $gray-100;
+    }
+  }
+
+  .timeline-card,
+  .tabs-card {
+    border-radius: $border-radius-lg;
+    border: none;
+    box-shadow: $shadow-sm;
+    height: 100%;
+
+    .ant-card-head {
+      border-bottom: 1px solid $gray-100;
+
+      .ant-card-head-title {
+        color: $gray-400;
+        font-weight: 600;
+      }
+    }
+
+    .ant-timeline {
+      .ant-timeline-item {
+        .ant-timeline-item-content {
+          color: $gray-400;
+          font-weight: 500;
+        }
+      }
+    }
+
+    .tab-content {
+      .detail-list {
+        p {
+          margin-bottom: $spacing-sm;
+          color: $gray-400;
+
+          strong {
+            color: $gray-400;
+          }
+        }
+      }
+
+      .config-section {
+        h4 {
+          color: $gray-400;
+          margin-bottom: $spacing-md;
+        }
+
+        .ant-tag {
+          margin-bottom: $spacing-xs;
+        }
+      }
+    }
+  }
+
+  .status-card {
+    margin-top: $spacing-xl;
+    border-radius: $border-radius-lg;
+    border: none;
+    box-shadow: $shadow-sm;
+
+    .ant-card-head {
+      border-bottom: 1px solid $gray-100;
+
+      .ant-card-head-title {
+        color: $gray-400;
+        font-weight: 600;
+      }
+    }
+
+    .status-item {
+      display: flex;
+      align-items: center;
+      gap: $spacing-md;
+      padding: $spacing-lg;
+      border-radius: $border-radius-md;
+      background-color: $white;
+      border: 1px solid $gray-100;
+      transition: all $transition-normal;
+
+      &:hover {
+        box-shadow: $shadow-sm;
+        transform: translateY(-2px);
+      }
+
+      .status-icon {
+        font-size: 24px;
+
+        &.success {
+          color: $success;
+        }
+
+        &.processing {
+          color: $primary;
+        }
+
+        &.warning {
+          color: $warning;
+        }
+
+        &.error {
+          color: $danger;
+        }
+      }
+
+      .status-text {
+        flex: 1;
+
+        .status-title {
+          color: $gray-400;
+          font-weight: 600;
+          font-size: 16px;
+          margin-bottom: $spacing-xs;
+        }
+
+        .status-desc {
+          color: $gray-300;
+          font-size: 14px;
+        }
+      }
+    }
+  }
+
+  // 响应式处理
+  @media (max-width: $breakpoint-md) {
+    .page-header .header-content {
+      flex-direction: column;
+      align-items: stretch;
+
+      .action-buttons {
+        justify-content: flex-start;
+      }
+    }
+
+    .steps-card {
+      .custom-steps {
+        .ant-steps-item {
+          .ant-steps-item-title {
+            font-size: 14px;
+          }
+
+          .ant-steps-item-description {
+            display: none;
+          }
+        }
+      }
+
+      .steps-action {
+        flex-direction: column;
+        gap: $spacing-sm;
+
+        .ant-btn {
+          width: 100%;
+        }
+      }
+    }
+
+    .status-card {
+      .status-item {
+        padding: $spacing-md;
+
+        .status-icon {
+          font-size: 20px;
+        }
+
+        .status-text {
+          .status-title {
+            font-size: 14px;
+          }
+
+          .status-desc {
+            font-size: 12px;
+          }
+        }
+      }
+    }
+  }
+
+  @media (max-width: $breakpoint-sm) {
+    .steps-card .custom-steps {
+      .ant-steps-item {
+        .ant-steps-item-icon {
+          width: 24px;
+          height: 24px;
+          line-height: 24px;
+
+          .anticon {
+            font-size: 12px;
+          }
+        }
+      }
+    }
+  }
+}
