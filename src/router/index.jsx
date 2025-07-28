@@ -84,55 +84,6 @@ export const routerConfig = [
         }
       },
 
-      // 用户管理
-      {
-        path: 'users',
-        element: <UserManagement />,
-        meta: {
-          title: '用户管理',
-          icon: 'fas fa-users',
-          requireAuth: true,
-          permissions: ['user_management'],
-          breadcrumb: [
-            { title: '首页', path: '/' },
-            { title: '用户管理', path: '/users' }
-          ]
-        }
-      },
-
-      // 订单管理
-      {
-        path: 'orders',
-        element: <OrderManagement />,
-        meta: {
-          title: '订单管理',
-          icon: 'fas fa-shopping-cart',
-          requireAuth: true,
-          permissions: ['order_management'],
-          breadcrumb: [
-            { title: '首页', path: '/' },
-            { title: '订单管理', path: '/orders' }
-          ]
-        }
-      },
-
-      // 系统设置
-      {
-        path: 'settings',
-        element: <SystemSettings />,
-        meta: {
-          title: '系统设置',
-          icon: 'fas fa-cog',
-          requireAuth: true,
-          permissions: ['system_settings'],
-          roles: ['admin'],
-          breadcrumb: [
-            { title: '首页', path: '/' },
-            { title: '系统设置', path: '/settings' }
-          ]
-        }
-      },
-
       // 功能集合 - 折叠展开模式
       {
         path: 'features',
@@ -188,6 +139,55 @@ export const routerConfig = [
             }
           }
         ]
+      },
+
+      // 用户管理
+      {
+        path: 'users',
+        element: <UserManagement />,
+        meta: {
+          title: '用户管理',
+          icon: 'fas fa-users',
+          requireAuth: true,
+          permissions: ['user_management'],
+          breadcrumb: [
+            { title: '首页', path: '/' },
+            { title: '用户管理', path: '/users' }
+          ]
+        }
+      },
+
+      // 订单管理
+      {
+        path: 'orders',
+        element: <OrderManagement />,
+        meta: {
+          title: '订单管理',
+          icon: 'fas fa-shopping-cart',
+          requireAuth: true,
+          permissions: ['order_management'],
+          breadcrumb: [
+            { title: '首页', path: '/' },
+            { title: '订单管理', path: '/orders' }
+          ]
+        }
+      },
+
+      // 系统设置
+      {
+        path: 'settings',
+        element: <SystemSettings />,
+        meta: {
+          title: '系统设置',
+          icon: 'fas fa-cog',
+          requireAuth: true,
+          permissions: ['system_settings'],
+          roles: ['admin'],
+          breadcrumb: [
+            { title: '首页', path: '/' },
+            { title: '系统设置', path: '/settings' }
+          ]
+        }
       },
 
       // 权限管理组

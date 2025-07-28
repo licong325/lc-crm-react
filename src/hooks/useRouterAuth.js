@@ -1,6 +1,7 @@
 import { useMemo } from 'react'
 import { useGlobalStore } from '@stores/useGlobalStore'
 import { filterRoutesByPermission, generateMenuData, routerConfig } from '@/router'
+import { MENU_ORDER } from '@constants'
 
 /**
  * 路由权限控制Hook
@@ -60,9 +61,31 @@ export const useRouterAuth = () => {
     return filterRoutesByPermission(routerConfig, userPermissions, userRoles)
   }, [isAuthenticated, userPermissions, userRoles])
 
-  // 生成菜单数据
+  // 生成菜单数据并手动排序
   const menuData = useMemo(() => {
-    return generateMenuData(filteredRoutes)
+    const unsortedMenuData = generateMenuData(filteredRoutes)
+
+    // 手动对菜单数据进行排序
+    return unsortedMenuData.sort((a, b) => {
+      // 为菜单项分配顺序值
+      const getMenuOrder = (item) => {
+        const path = item.path
+
+        if (path === 'dashboard') return MENU_ORDER.DASHBOARD
+        if (path === 'features') return MENU_ORDER.FEATURE_COLLECTION
+        if (path === 'users') return MENU_ORDER.USER_MANAGEMENT
+        if (path === 'orders') return MENU_ORDER.ORDER_MANAGEMENT
+        if (path === 'settings') return MENU_ORDER.SYSTEM_SETTINGS
+
+        // 权限管理组
+        if (item.isGroup && item.title === '权限管理') return MENU_ORDER.PERMISSION_GROUP
+
+        // 默认顺序值
+        return 999
+      }
+
+      return getMenuOrder(a) - getMenuOrder(b)
+    })
   }, [filteredRoutes])
 
   // 检查是否有权限访问指定路径

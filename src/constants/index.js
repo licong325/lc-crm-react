@@ -12,6 +12,16 @@ export const ROUTES = {
   PERMISSION_CONFIG: '/permissions'
 }
 
+// 菜单顺序常量
+export const MENU_ORDER = {
+  DASHBOARD: 1,
+  FEATURE_COLLECTION: 2,
+  USER_MANAGEMENT: 3,
+  ORDER_MANAGEMENT: 4,
+  SYSTEM_SETTINGS: 5,
+  PERMISSION_GROUP: 6
+}
+
 // 菜单配置已迁移到路由配置中
 // 请查看 src/router/index.jsx 了解新的菜单系统
 
