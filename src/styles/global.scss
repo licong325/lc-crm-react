@@ -169,3 +169,18 @@ body {
     }
   }
 }
+
+// 子路由容器样式
+.sub-route-container {
+  padding: 20px;
+
+  h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #4E5969;
+  }
+
+  .outlet-container {
+    min-height: 200px;
+  }
+}

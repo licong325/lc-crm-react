@@ -19,7 +19,7 @@ const RouterView = ({ routes }) => {
       if (children && children.length > 0) {
         // 有子路由的路由
         return (
-          <Route key={path || index} path={path} element={element} {...rest}>
+          <Route key={path || index} path={`${path}`} element={element} {...rest}>
             {renderRoutes(children)}
           </Route>
         )

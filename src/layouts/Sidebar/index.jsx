@@ -75,11 +75,15 @@ const Sidebar = () => {
           key: item.path,
           icon: <i className={item.icon} />,
           label: item.title,
-          children: item.children?.map(child => ({
-            key: child.path,
-            icon: <i className={child.icon} />,
-            label: <Link to={child.path}>{child.title}</Link>
-          }))
+          children: item.children?.map(child => {
+            // 确保子菜单路径正确拼接
+            const fullPath = `${item.path}/${child.path}`
+            return {
+              key: fullPath,
+              icon: <i className={child.icon} />,
+              label: <Link to={fullPath}>{child.title}</Link>
+            }
+          })
         }
       } else if (item.isGroup) {
         // 分组菜单不在这里处理，保持原有渲染方式

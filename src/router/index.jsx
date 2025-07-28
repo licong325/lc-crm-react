@@ -1,4 +1,4 @@
-import { Navigate } from 'react-router-dom'
+import { Navigate, Outlet } from 'react-router-dom'
 import MainLayout from '@layouts/MainLayout'
 import Dashboard from '@pages/Dashboard'
 import UserManagement from '@pages/UserManagement'
@@ -34,6 +34,18 @@ const PagePlaceholder = ({ title, icon = 'fas fa-cog' }) => (
     </div>
   </div>
 )
+
+// 子路由容器组件 - 用于渲染子路由的Outlet
+const SubRouteContainer = ({ title = '子路由容器' }) => {
+  return (
+    <div className="sub-route-container">
+      <h2>{title}</h2>
+      <div className="outlet-container">
+        <Outlet />
+      </div>
+    </div>
+  )
+}
 
 /**
  * 路由配置数组
@@ -124,6 +136,7 @@ export const routerConfig = [
       // 功能集合 - 折叠展开模式
       {
         path: 'features',
+        element: <SubRouteContainer title="功能集合" />,
         meta: {
           title: '功能集合',
           icon: 'fas fa-puzzle-piece',
@@ -136,6 +149,14 @@ export const routerConfig = [
           ]
         },
         children: [
+          // 默认重定向到功能1
+          {
+            index: true,
+            element: <Navigate to="/features/feature1" replace />,
+            meta: {
+              hidden: true
+            }
+          },
           {
             path: 'feature1',
             element: <Feature1 />,
