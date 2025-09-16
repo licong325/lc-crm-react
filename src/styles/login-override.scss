@@ -1,0 +1,28 @@
+// 登录页面全局样式覆盖，确保完全全屏显示
+body.login-page-body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+
+  #root {
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+  }
+
+  .ant-app {
+    width: 100vw;
+    height: 100vh;
+  }
+}
+
+// 移除任何可能的边距和内边距
+.login-page {
+  margin: 0 !important;
+  padding: 0 !important;
+
+  * {
+    box-sizing: border-box;
+  }
+}

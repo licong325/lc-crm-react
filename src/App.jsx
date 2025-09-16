@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ConfigProvider } from 'antd'
 import zhCN from 'antd/locale/zh_CN'
 import RouterView from '@/router/RouterView'
+import AuthGuard from '@components/AuthGuard'
 import { useRouterAuth } from '@hooks/useRouterAuth'
 import { useGlobalStore } from '@stores/useGlobalStore'
 import '@styles/global.scss'
@@ -43,23 +44,32 @@ const theme = {
  */
 const AppContent = () => {
   const { filteredRoutes } = useRouterAuth()
-  const { login } = useGlobalStore()
+  const { login, isAuthenticated } = useGlobalStore()
 
-  // 模拟自动登录 - 实际项目中应该检查token有效性
+  // 检查本地存储的登录状态并恢复登录
   React.useEffect(() => {
-    // 模拟登录用户
-    const mockUser = {
-      id: 1,
-      name: '管理员',
-      email: 'admin@example.com',
-      role: 'admin' // admin | manager | user
+    const token = localStorage.getItem('userToken')
+    const userInfo = localStorage.getItem('userInfo')
+
+    if (token && userInfo && !isAuthenticated) {
+      try {
+        const userData = JSON.parse(userInfo)
+        // 恢复登录状态
+        login(userData, token)
+      } catch (error) {
+        console.error('恢复登录状态失败:', error)
+        // 清除无效的本地存储
+        localStorage.removeItem('userToken')
+        localStorage.removeItem('userInfo')
+      }
     }
-    const mockToken = 'mock-jwt-token'
+  }, [login, isAuthenticated])
 
-    login(mockUser, mockToken)
-  }, [login])
-
-  return <RouterView routes={filteredRoutes} />
+  return (
+    <AuthGuard>
+      <RouterView routes={filteredRoutes} />
+    </AuthGuard>
+  )
 }
 
 /**

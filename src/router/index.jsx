@@ -8,6 +8,7 @@ import RoleManagement from '@pages/RoleManagement'
 import PermissionConfig from '@pages/PermissionConfig'
 import Feature1 from '@pages/Feature1'
 import Feature2 from '@pages/Feature2'
+import Login from '@pages/Login'
 
 /**
  * 路由配置
@@ -51,6 +52,17 @@ const SubRouteContainer = ({ title = '子路由容器' }) => {
  * 路由配置数组
  */
 export const routerConfig = [
+  // 登录页面 - 不需要布局和认证
+  {
+    path: '/login',
+    element: <Login />,
+    meta: {
+      title: '用户登录',
+      requireAuth: false,
+      hidden: true
+    }
+  },
+
   {
     path: '/',
     element: <MainLayout />,

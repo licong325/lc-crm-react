@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { Dropdown, Menu, Avatar, Badge } from 'antd'
+import { Dropdown, Menu, Avatar, Badge, message } from 'antd'
+import { useNavigate } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import { useGlobalStore } from '@stores/useGlobalStore'
 import './index.scss'
@@ -10,6 +11,7 @@ import './index.scss'
 const Header = () => {
   const { sidebarCollapsed, toggleSidebar, user, breadcrumbs, logout } = useGlobalStore()
   const [notificationCount] = useState(3) // 模拟通知数量
+  const navigate = useNavigate()
 
   // 用户下拉菜单
   const userMenuItems = [
@@ -44,7 +46,17 @@ const Header = () => {
         console.log('打开设置')
         break
       case 'logout':
+        // 清除本地存储
+        localStorage.removeItem('userToken')
+        localStorage.removeItem('userInfo')
+
+        // 更新全局状态
         logout()
+
+        message.success('退出登录成功')
+
+        // 跳转到登录页面
+        navigate('/login', { replace: true })
         break
       default:
         break
